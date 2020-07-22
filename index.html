@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>QwQ</title>
+</head>
+<body>
+	<canvas id="canvas" width="700" height="700"></canvas>
+	<script src="https://www.billy2007.tk/jquery-2.1.0.js"></script>
+	<script>
+		//来源：《趣学JavaScript——教孩子学编程》
+		//87 65 83 68 wasd
+		var canvas=document.getElementById("canvas");
+		var ctx=canvas.getContext("2d");
+		var wd=canvas.width;
+		var ht=canvas.height;
+		var sz=10;
+		var wib=wd/sz;
+		var hib=ht/sz;
+		var sco=0;
+		var dirs = {
+			87: "up",
+			65: "left",
+			83: "down",
+			68: "right"
+		};
+		var sum = new Array();
+		for(var k=0;k<155;k++){ 
+			sum[k]=new Array();  
+			for(var j=0;j<155;j++){  
+				sum[k][j]=0;   
+ 			}
+		}
+		var Blo=function(c,r){
+			this.c=c;
+			this.r=r;
+		}
+		function circle(x,y,r,f) {
+			ctx.beginPath();
+			ctx.arc(x,y,r,0,Math.PI*2,false);
+			if(f){
+				ctx.fill();
+			}else{
+				ctx.stroke();
+			}
+		}
+		Blo.prototype.ds = function(cl) {
+			var x=this.c*sz;
+			var y=this.r*sz;
+			ctx.fillStyle=cl;
+			ctx.fillRect(x,y,sz,sz);
+		};
+		Blo.prototype.dc = function(cl) {
+			var x=this.c*sz+sz/2;
+			var y=this.r*sz+sz/2;
+			ctx.fillStyle=cl;
+			circle(x,y,sz/2,true);
+		};
+		Blo.prototype.eq = function(other) {
+			return this.c===other.c&&this.r===other.r;
+		};
+		function drb() {
+			ctx.fillStyle="Black";
+			ctx.fillRect(0,0,wd,sz);
+			ctx.fillRect(0,ht-sz,wd,sz);
+			ctx.fillRect(0,0,sz,ht);
+			ctx.fillRect(wd-sz,0,sz,ht);
+		}
+		function Apple() {
+			this.pos=new Blo(10,10);
+		}
+		var colors=["Gray","Yellow","Green","LimeGreen","Cyan","Blue","Orange","Red","Pink","Purple"];
+		Apple.prototype.draw = function() {
+			if(sum[this.pos.c][this.pos.r]<=10) this.pos.dc(colors[sum[this.pos.c][this.pos.r]-1]);
+			else this.pos.dc("Brown");
+		};
+		Apple.prototype.move = function() {
+			var randc=Math.floor(Math.random()*(wib-2))+1;
+			var randr=Math.floor(Math.random()*(hib-2))+1;
+			this.pos=new Blo(randc,randr);
+			sum[randc][randr]++;
+		};
+		var apple=new Apple();
+		var intI=setInterval(function() {
+			//ctx.clearRect(0,0,wd,ht);
+			//drs();
+			drb();
+			// snake.move();
+			// snake.draw();
+			sco++;
+			apple.move();
+			apple.draw();
+		},0.1);
+		$("body").keydown(function(event) {
+     	 		if(event.keyCode===32){
+     	 			//clearInterval(intI);
+     	 			console.log(sco);
+     	 		}
+		});
+	</script>
+</body>
+</html>
